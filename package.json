@@ -1,0 +1,40 @@
+{
+  "name": "codice-fiscale",
+  "version": "0.0.1",
+  "description": "Javascript object for managing the italian tax code",
+  "main": "dist/CodiceFiscale.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heavybeard/codice-fiscale.git"
+  },
+  "keywords": [
+    "codice fiscale",
+    "tax code",
+    "italian tax code"
+  ],
+  "author": "heavybeard",
+  "contributors": [{
+    "name": "zingus",
+    "url": "http://zingus.altervista.org/"
+  }],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/heavybeard/codice-fiscale/issues"
+  },
+  "homepage": "https://github.com/heavybeard/codice-fiscale#readme",
+  "devDependencies": {
+    "nodemon": "^1.8.1",
+    "uglify-js": "^2.4.21"
+  },
+   "scripts": {
+    "compress-js": "uglifyjs --mangle --preamble=\"/** CodiceFiscale - 0.0.1 (https://github.com/heavybeard/codice-fiscale) */\" source/CodiceFiscale.js source/CodiceFiscale.cadastralCodes.js > dist/CodiceFiscale.min.js",
+    "watch-compress-js": "nodemon -e js --watch source -x \"npm run compress-js\"",
+    "clean": "rm dist/*.js",
+    "watch": "npm run watch-compress-js",
+    "version": "npm run build && git add -u .",
+    "build": "npm run clean && npm run compress-js"
+  }
+}

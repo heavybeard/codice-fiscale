@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CodiceFiscale</title>
+    <style type="text/css">
+        fieldset {
+            width: 450px;
+        }
+        
+        body {
+            font: 10pt Verdana, Arial, sans-serif;
+        }
+        
+        label {
+            display: block;
+        }
+        
+        label:after {
+            content: ":";
+        }
+        
+        label[for=m]:after,
+        label[for=f]:after {
+            content: ""
+        }
+        
+        div {
+            margin: 5px;
+            height: 50px;
+            width: 200px;
+            float: left;
+        }
+    </style>
+    <script src="./CodiceFiscale.min.js" type="text/javascript" charset="utf-8" async defer></script>
+    <script type="text/javascript">
+        function formsubmit(form) {
+            var isMale = form.gender[0].checked ? true : false;
+            var date = form.date.value;
+            date = date.match(/^\s*(\d+).(\d+).(\d+)/);
+            var taxCode = CodiceFiscale.getTaxCode(form.name.value, form.lastname.value, date[1], date[2], date[3], isMale, form.commune.value);
+
+            form.taxCode.value = taxCode;
+        }
+    </script>
+</head>
+
+<body>
+    <form action="#" onsubmit="formsubmit(this); return false;">
+        <fieldset>
+            <legend>Calc the italian tax code</legend>
+            <div>
+                <label for="name">Name</label>
+                <input type="text" name="name" value="Mario" />
+            </div>
+            <div>
+                <label for="lastname">Lastname</label>
+                <input type="text" name="lastname" value="Rossi" />
+            </div>
+            <div style="clear:left">
+                <label for="date">Birth day</label>
+                <input type="text" name="date" value="25/04/1945" />
+            </div>
+            <div>
+                <label for="commune">Birth place</label>
+                <input type="text" name="commune" value="Cassano Magnago" />
+            </div>
+            <div style="clear:left">
+                <label for="gender">Gender</label>
+                <label style="display:inline" for="m">M</label>
+                <input type="radio" name="gender" id="m" value="M" checked="checke">
+                <label style="display:inline" for="f">F</label>
+                <input type="radio" name="gender" id="f" value="F">
+            </div>
+            <div>
+                <label for="taxCode">Tax Code</label>
+                <input type="text" name="taxCode" value="" size=16>
+            </div>
+            <div style="clear:left;text-align:center;width:400px;">
+                <input style="width:150px;height:25px; margin:12.50px" type="submit" value="Calc">
+            </div>
+        </fieldset>
+    </form>
+</body>
+
+
+</html>
