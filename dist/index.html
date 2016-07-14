@@ -46,7 +46,7 @@
                 isMale: isMale,
                 commune: form.commune.value
             };
-            var taxCode = CodiceFiscale.getTaxCode(generality);
+            var taxCode = CodiceFiscale(generality);
 
             form.taxCode.value = taxCode;
         }
