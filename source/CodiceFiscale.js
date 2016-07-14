@@ -79,7 +79,6 @@ var CodiceFiscale = CodiceFiscale || {};
             communeCode = this.getCommuneCode(commune),
             taxCode = '';
 
-
         taxCode = lastNameCode + nameCode + dateCode + communeCode;
         taxCode += this.getControlChar(taxCode);
 
