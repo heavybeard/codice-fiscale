@@ -88,7 +88,6 @@ var CodiceFiscale = CodiceFiscale || {};
 
     /**
      * Get the control char of a defined tax code
-     * /!\ ATTENTION /!\ - DON'T WORK!!!
      *
      * @protected
      * @param  {String} codiceFiscale The tax code to parse
@@ -108,6 +107,7 @@ var CodiceFiscale = CodiceFiscale || {};
                 val += this.getControlValueOdd(indexChar);
             }
         }
+
         val = val % this.getMaxAlphabetChar();
 
         return this.getControlChars().charAt(val);
@@ -176,7 +176,7 @@ var CodiceFiscale = CodiceFiscale || {};
         date.setDate(day);
 
         /** @type {String} Set the stringed Year */
-        stringedYear = '0' + date.getFullYear().toString().substr(year.length - 2, 2);
+        stringedYear = date.getFullYear().toString().substr(year.length - 2, 2);
 
         /** @type {String} Set the stringed Month */
         stringedMonth = this.getMonthCode(date.getMonth());
@@ -184,8 +184,7 @@ var CodiceFiscale = CodiceFiscale || {};
         /** @type {String} Set the stringed Day with gender */
         stringedDay = date.getDate();
         stringedDay = (isMale) ? stringedDay : stringedDay + 40;
-        stringedDay = '0' + stringedDay;
-        stringedDay = stringedDay.substr(stringedDay.length - 2, 2);
+        stringedDay = stringedDay.toString().substr(stringedDay.length - 2, 2);
 
         return '' + stringedYear + stringedMonth + stringedDay;
     };
