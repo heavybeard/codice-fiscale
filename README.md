@@ -13,24 +13,47 @@ Add the Object file
 Use the function to calculate the tax code
 
 ```javascript
-var name = 'Mario',
-    lastname = 'Rossi',
-    day = '25',
-    month = '04',
-    year = '1945',
-    isMale = true,
-    commune = 'Milano';
+var person = new CodiceFiscale({
+    name: 'Mario',
+    lastname: 'Rossi',
+    day: '25',
+    month: '04',
+    year: '1945',
+    isMale: true,
+    communeName: 'Milano'
+});
+```
+Use the public function for getting specific taxcode part
 
-CodiceFiscale.getTaxCode(name, lastname, day, month, year, true, 'Milano');
+```javascript
+person.taxCode();       // RSSMRA45D25F205N
+person.lastnameCode();  // RSS
+person.nameCode();      //    MRA
+
+person.dateCode();      //       45D25
+person.yearCode();      //       45
+person.monthCode();     //         D
+person.dayCode();       //          25
+
+person.communeCode();   //            F205
+
+person.controlChar();   //                N
 ```
 
 ## Known issues
 
-### Calculation of control char
+### ~~Calculation of control char~~
 
-The `CodiceFiscale.getControlChar()` don't work properly, so the last tax code's char is not always right.
+~~The control char calculation don't work properly, so the last tax code's char is not always right~~
 
 ## Versions
+
+### Version 1.0.0
+
+* Complete refactoring of the code
+* CodiceFiscale is an Object with a constructor
+* Create public function for specific taxcode part
+* Fixed control char calculation
 
 ### Version 0.0.1
 
