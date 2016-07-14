@@ -35,7 +35,8 @@
     <script src="./CodiceFiscale.min.js" type="text/javascript" charset="utf-8" async defer></script>
     <script type="text/javascript">
         function formsubmit(form) {
-            var isMale = form.gender[0].checked ? true : false;
+            window.globalForm = form;
+            var isMale = form.gender[0].checked;
             var date = form.date.value.match(/^\s*(\d+).(\d+).(\d+)/);
             var generality = {
                 name: form.name.value,
@@ -44,9 +45,9 @@
                 month: date[2],
                 year: date[3],
                 isMale: isMale,
-                commune: form.commune.value
+                communeName: form.communeName.value
             };
-            var taxCode = CodiceFiscale(generality);
+            taxCode = new CodiceFiscale(generality);
 
             form.taxCode.value = taxCode;
         }
@@ -59,24 +60,24 @@
             <legend>Calc the italian tax code</legend>
             <div>
                 <label for="name">Name</label>
-                <input type="text" name="name" value="Mario" />
+                <input type="text" name="name" value="Andrea" />
             </div>
             <div>
                 <label for="lastname">Lastname</label>
-                <input type="text" name="lastname" value="Rossi" />
+                <input type="text" name="lastname" value="Cognini" />
             </div>
             <div style="clear:left">
                 <label for="date">Birth day</label>
-                <input type="text" name="date" value="25/04/1945" />
+                <input type="text" name="date" value="18/03/1993" />
             </div>
             <div>
-                <label for="commune">Birth place</label>
-                <input type="text" name="commune" value="Cassano Magnago" />
+                <label for="communeName">Birth place</label>
+                <input type="text" name="communeName" value="Senigallia" />
             </div>
             <div style="clear:left">
                 <label for="gender">Gender</label>
                 <label style="display:inline" for="m">M</label>
-                <input type="radio" name="gender" id="m" value="M" checked="checke">
+                <input type="radio" name="gender" id="m" value="M" checked>
                 <label style="display:inline" for="f">F</label>
                 <input type="radio" name="gender" id="f" value="F">
             </div>
