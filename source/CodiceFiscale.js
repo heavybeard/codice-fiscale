@@ -10,18 +10,22 @@ function CodiceFiscale(generality) {
         return new CodiceFiscale(generality);
     }
 
-    // Get the generality options
     var g = this._options(generality);
 
+    /** @type {String} The name */
     this.name = g.name;
+    /** @type {String} The lastname */
     this.lastname = g.lastname;
+    /** @type {String} The day of birth */
     this.day = g.day;
+    /** @type {String} The month of birth */
     this.month = g.month;
+    /** @type {String} The year of birth */
     this.year = g.year;
+    /** @type {Boolean} Set true if is male gender */
     this.isMale = g.isMale;
+    /** @type {String} The commun */
     this.communeName = g.communeName;
-
-    return this;
 }
 
 /** @type {Object} Define the prototype constructor */
@@ -70,7 +74,221 @@ CodiceFiscale.prototype._charsControlValue = {
 CodiceFiscale.prototype._cadastralCodes = {};
 
 /**
- * Return the generality settend on Class call
+ * Return the tax code
+ *
+ * @public
+ * @return {String}
+ */
+CodiceFiscale.prototype.taxCode = function () {
+    var lastnameCode = this.lastnameCode(this.lastname),
+        nameCode = this.nameCode(this.name),
+        dateCode = this.dateCode(this.day, this.month, this.year, this.isMale),
+        communeCode = this.communeCode(this.commune),
+        taxCode = '';
+
+    taxCode = lastnameCode + nameCode + dateCode + communeCode;
+    taxCode += this.controlChar(taxCode);
+
+    return taxCode;
+};
+
+/**
+ * Return the lastname code [3 chars in uppercase]
+ *
+ * @public
+ * @return {String}
+ */
+CodiceFiscale.prototype.lastnameCode = function () {
+    var lastname = this.lastname,
+        lastnameCode = '';
+
+    lastnameCode = this._consonants(lastname);
+    lastnameCode += this._vowels(lastname);
+    lastnameCode += 'XXX';
+    lastnameCode = lastnameCode.substr(0, 3);
+
+    return lastnameCode.toUpperCase();
+};
+
+/**
+ * Return the name code [3 chars in uppercase]
+ *
+ * @public
+ * @return {String}
+ */
+CodiceFiscale.prototype.nameCode = function () {
+    var name = this.name,
+        nameCode = '';
+
+    nameCode = this._consonants(name);
+    if (nameCode.length >= 4) {
+        nameCode = nameCode.charAt(0) + nameCode.charAt(2) + nameCode.charAt(3);
+    }
+    else {
+        nameCode += this._vowels(name);
+        nameCode += 'XXX';
+        nameCode = nameCode.substr(0,3);
+    }
+
+    return nameCode.toUpperCase();
+};
+
+/**
+ * Return the date code
+ *
+ * @public
+ * @return {String}
+ */
+CodiceFiscale.prototype.dateCode = function () {
+    var stringedYear = this.yearCode(),
+        stringedMonth = this.monthCode(),
+        stringedDay = this.dayCode();
+
+    return '' + stringedYear + stringedMonth + stringedDay;
+};
+
+/**
+ * Return the year code
+ *
+ * @public
+ * @param  {Number} month The year
+ * @return
+ */
+CodiceFiscale.prototype.yearCode = function () {
+    year = this.year.toString().substr(this.year.length - 2, 2);
+
+    return year;
+};
+
+/**
+ * Return the month code
+ *
+ * @public
+ * @param  {Number} month The month
+ * @return
+ */
+CodiceFiscale.prototype.monthCode = function () {
+    var month = parseInt(this.month - 1);
+
+    return this._monthCodes[month];
+};
+
+/**
+ * Return the day code
+ *
+ * @public
+ * @param  {Number} day The day
+ * @return
+ */
+CodiceFiscale.prototype.dayCode = function () {
+    var day = parseInt(this.day);
+
+    day = (this.isMale) ? day : day + 40;
+    day = day.toString().substr(day.length - 2, 2);
+
+    return day;
+};
+
+/**
+ * Return the commune code
+ *
+ * @public
+ * @return {String}
+ */
+CodiceFiscale.prototype.communeCode = function () {
+    var communeName = this.communeName,
+        stringToMatch = /^[A-Z]\d\d\d$/i;
+
+    if (communeName.match(stringToMatch)) {
+        return communeName;
+    }
+
+    return this._commune()[0][1];
+};
+
+/**
+ * Return the control char of a taxcode
+ *
+ * @public
+ * @return {String}
+ */
+CodiceFiscale.prototype.controlChar = function (partialTaxCode) {
+    // Return the control char
+    if (typeof partialTaxCode === 'undefined') {
+        return this.taxCode()[this._maxChar];
+    }
+
+    var i = 0,
+        val = 0,
+        indexChar = 0;
+
+    for (i = 0; i < this._maxChar; i++) {
+        indexChar = partialTaxCode[i];
+        if (i % 2) {
+            val += this._controlValue('even', indexChar);
+        }
+        else {
+            val += this._controlValue('odd', indexChar);
+        }
+    }
+
+    val = val % this._controlChars.length;
+
+    return this._controlChars.charAt(val);
+};
+
+/**
+ * Return the commune name and code
+ *
+ * @private
+ * @return {Array}
+ */
+CodiceFiscale.prototype._commune = function () {
+    var communeName = this.communeName,
+        code = [],
+        commune = [],
+        communeCodeToReturn = [],
+        stringToReplace = /([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!<\>\|\:])/g,
+        quoted = '',
+        re = '',
+        regex = '';
+
+    quoted = communeName.replace(stringToReplace, '\\$1');
+    regex = new RegExp(quoted, 'i');
+    for (code in this._cadastralCodes) {
+        commune = this._communeCadastralCode(code);
+        if (commune.match(regex)) {
+            communeCodeToReturn.push([commune, code]);
+        }
+    }
+
+    return communeCodeToReturn;
+};
+
+/**
+ * Return the cadastralCode selected
+ *
+ * @private
+ * @return {String}
+ */
+CodiceFiscale.prototype._communeCadastralCode = function (code) {
+    return this._cadastralCodes[code];
+};
+
+/**
+ * Return control value of even/odd char
+ *
+ * @private
+ * @param  {String} type 'even' or 'odd'
+ * @param  {String} char The char to check
+ * @return {Number}
+ */
+CodiceFiscale.prototype._controlValue = function (type, char) {
+    return this._charsControlValue[type][char];
+};
+
+/**
+ * Return the generality setted on Class call
  *
  * @private
  * @param  {Object|Array} generality The generality passed
@@ -107,7 +325,7 @@ CodiceFiscale.prototype._checkUndefined = function (object) {
 };
 
 /**
- * Get the cosonants of a string
+ * Return the cosonants of a string
  *
  * @private
  * @param  {String} string The string to parse
@@ -118,7 +336,7 @@ CodiceFiscale.prototype._consonants = function (string) {
 };
 
 /**
- * Get the vowels of a string
+ * Return the vowels of a string
  *
  * @private
  * @param  {String} string The string to parse
@@ -126,268 +344,4 @@ CodiceFiscale.prototype._consonants = function (string) {
  */
 CodiceFiscale.prototype._vowels = function (string) {
     return string.replace(/[^AEIOU]/gi,'');
-};
-
-/**
- * Get the tax code
- *
- * @public
- * @return {String}
- */
-CodiceFiscale.prototype.taxCode = function () {
-    var lastnameCode = this.lastnameCode(this.lastname),
-        nameCode = this.nameCode(this.name),
-        dateCode = this.dateCode(this.day, this.month, this.year, this.isMale),
-        communeCode = this.communeCode(this.commune),
-        taxCode = '';
-
-    taxCode = lastnameCode + nameCode + dateCode + communeCode;
-    taxCode += this.controlChar(taxCode);
-
-    return taxCode;
-};
-
-/**
- * Get the control char of a defined tax code
- *
- * @public
- * @return {String}
- */
-CodiceFiscale.prototype.controlChar = function () {
-    var i = 0,
-        val = 0,
-        indexChar = 0,
-        taxCode = this.taxCode();
-
-    for (i = 0; i < this.maxChar(); i++) {
-        indexChar = taxCode[i];
-        if (i % 2) {
-            val += this.controlValueEven(indexChar);
-        }
-        else {
-            val += this.controlValueOdd(indexChar);
-        }
-    }
-
-    val = val % this.maxAlphabetChar();
-
-    return this.controlChars().charAt(val);
-};
-
-/**
- * Get the lastname code [3 chars in uppercase]
- *
- * @protected
- * @return {String}
- */
-CodiceFiscale.prototype.lastnameCode = function () {
-    var lastname = this.lastname,
-        lastnameCode = '';
-
-    lastnameCode = this._consonants(lastname);
-    lastnameCode += this._vowels(lastname);
-    lastnameCode += 'XXX';
-    lastnameCode = lastnameCode.substr(0, 3);
-
-    return lastnameCode.toUpperCase();
-};
-
-/**
- * Get the name code [3 chars in uppercase]
- *
- * @protected
- * @return {String}
- */
-CodiceFiscale.prototype.nameCode = function () {
-    var name = this.name,
-        nameCode = '';
-
-    nameCode = this._consonants(name);
-    if (nameCode.length >= 4) {
-        nameCode = nameCode.charAt(0) + nameCode.charAt(2) + nameCode.charAt(3);
-    }
-    else {
-        nameCode += this._vowels(name);
-        nameCode += 'XXX';
-        nameCode = nameCode.substr(0,3);
-    }
-
-    return nameCode.toUpperCase();
-};
-
-/**
- * Get the date code
- *
- * @protected
- * @return {String}
- */
-CodiceFiscale.prototype.dateCode = function () {
-    var day = this.day,
-        month = this.month,
-        year = this.year,
-        isMale = this.isMale,
-        date = new Date(),
-        stringedDay = 0,
-        stringedMonth = 0,
-        stringedYear = 0;
-
-    /** Set the JS Date */
-    date.setYear(year);
-    date.setMonth(month - 1);
-    date.setDate(day);
-
-    /** @type {String} Set the stringed Year */
-    stringedYear = date.getFullYear().toString().substr(year.length - 2, 2);
-
-    /** @type {String} Set the stringed Month */
-    stringedMonth = this.monthCode(date.getMonth());
-
-    /** @type {String} Set the stringed Day with gender */
-    stringedDay = date.getDate();
-    stringedDay = (isMale) ? stringedDay : stringedDay + 40;
-    stringedDay = stringedDay.toString().substr(stringedDay.length - 2, 2);
-
-    return '' + stringedYear + stringedMonth + stringedDay;
-};
-
-/**
- * Get the commune code
- *
- * @protected
- * @return {String}
- */
-CodiceFiscale.prototype.communeCode = function () {
-    var communeName = this.communeName,
-        stringToMatch = /^[A-Z]\d\d\d$/i;
-
-    if (communeName.match(stringToMatch)) {
-        return communeName;
-    }
-
-    return this.communeName()[0][1];
-};
-
-/**
- * Get the commune name
- *
- * @private
- * @return {String}
- */
-CodiceFiscale.prototype.communeName = function () {
-    var communeName = this.communeName,
-        code = [],
-        commune = [],
-        communeCodeToReturn = [],
-        stringToReplace = /([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!<\>\|\:])/g,
-        quoted = '',
-        re = '',
-        regex = '';
-
-    quoted = communeName.replace(stringToReplace, '\\$1');
-    regex = new RegExp(quoted, 'i');
-    for (code in this.cadastralCodes()) {
-        commune = this.singleCadastralCode(code);
-        if (commune.match(regex)) {
-            communeCodeToReturn.push([commune, code]);
-        }
-    }
-
-    return communeCodeToReturn;
-};
-
-/**
- * Get control value of even char
- *
- * @protected
- * @param  {String} char The char to check
- * @return {Number}
- */
-CodiceFiscale.prototype.controlValueEven = function (char) {
-    return this.controlValue(char, true);
-};
-
-/**
- * Get control value of odd char
- *
- * @protected
- * @param  {String} char The char to check
- * @return {Number}
- */
-CodiceFiscale.prototype.controlValueOdd = function (char) {
-    return this.getControlValue(char, false);
-};
-
-/**
- * Get control value of char
- *
- * @private
- * @param  {String}     char    The char to check
- * @param  {Boolean}    isEvent Set true if is even char
- * @return {Number}
- */
-CodiceFiscale.prototype.controlValue = function (char, isEven) {
-    var type = (isEven) ? 'even' : 'odd';
-
-    return this._charsControlValue[type][char];
-};
-
-/**
- * Get the controlChars
- *
- * @protected
- * @return {String}
- */
-CodiceFiscale.prototype.controlChars = function () {
-    return this._controlChars;
-};
-
-/**
- * Get the maxAlphabetChar
- *
- * @protected
- * @return {Number}
- */
-CodiceFiscale.prototype.maxAlphabetChar = function () {
-    return this.controlChars().length;
-};
-
-/**
- * Get the maxChar
- *
- * @protected
- * @return {Number}
- */
-CodiceFiscale.prototype.maxChar = function () {
-    return this._maxChar;
-};
-
-/**
- * Get the month code
- *
- * @protected
- * @param  {Number} month The index of the month
- * @return
- */
-CodiceFiscale.prototype.monthCode = function (month) {
-    return this._monthCodes[month];
-};
-
-/**
- * Get the cadastralCodes
- *
- * @protected
- * @return {JSON}
- */
-CodiceFiscale.prototype.cadastralCodes = function () {
-    return this._cadastralCodes;
-};
-
-/**
- * Get the cadastralCode selected
- *
- * @protected
- * @return {String}
- */
-CodiceFiscale.prototype.singleCadastralCode = function (code) {
-    return this.cadastralCodes()[code];
 };
