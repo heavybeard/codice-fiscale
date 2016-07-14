@@ -72,11 +72,13 @@ var CodiceFiscale = CodiceFiscale || {};
      * @param  {String}  commune  The commune name
      * @return {String}
      */
-    CodiceFiscale.getTaxCode = function (name, lastname, day, month , year, isMale, commune) {
-        var lastNameCode = this.getLastnameCode(lastname),
-            nameCode = this.getNameCode(name),
-            dateCode = this.getDateCode(day, month, year, isMale),
-            communeCode = this.getCommuneCode(commune),
+    CodiceFiscale.getTaxCode = function (generality) {
+        var g = this.generality(generality);
+
+        var lastNameCode = this.getLastnameCode(g.lastname),
+            nameCode = this.getNameCode(g.name),
+            dateCode = this.getDateCode(g.day, g.month, g.year, g.isMale),
+            communeCode = this.getCommuneCode(g.commune),
             taxCode = '';
 
         taxCode = lastNameCode + nameCode + dateCode + communeCode;
@@ -231,6 +233,23 @@ var CodiceFiscale = CodiceFiscale || {};
         }
 
         return communeCodeToReturn;
+    };
+
+    /**
+     * Return the generality settend on Class call
+     * @param  {Object|Array} generality The generality passed
+     * @return {Object}
+     */
+    CodiceFiscale.generality = function (generality) {
+        return {
+            name: generality.name || generality[0],
+            lastname: generality.lastname || generality[1],
+            day: generality.day || generality[2],
+            month: generality.month || generality[3],
+            year: generality.year || generality[4],
+            isMale: generality.isMale || generality[5],
+            commune: generality.commune || generality[6],
+        };
     };
 
     /**

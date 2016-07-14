@@ -7,24 +7,24 @@
         fieldset {
             width: 450px;
         }
-        
+
         body {
             font: 10pt Verdana, Arial, sans-serif;
         }
-        
+
         label {
             display: block;
         }
-        
+
         label:after {
             content: ":";
         }
-        
+
         label[for=m]:after,
         label[for=f]:after {
             content: ""
         }
-        
+
         div {
             margin: 5px;
             height: 50px;
@@ -36,9 +36,17 @@
     <script type="text/javascript">
         function formsubmit(form) {
             var isMale = form.gender[0].checked ? true : false;
-            var date = form.date.value;
-            date = date.match(/^\s*(\d+).(\d+).(\d+)/);
-            var taxCode = CodiceFiscale.getTaxCode(form.name.value, form.lastname.value, date[1], date[2], date[3], isMale, form.commune.value);
+            var date = form.date.value.match(/^\s*(\d+).(\d+).(\d+)/);
+            var generality = {
+                name: form.name.value,
+                lastname: form.lastname.value,
+                day: date[1],
+                month: date[2],
+                year: date[3],
+                isMale: isMale,
+                commune: form.commune.value
+            };
+            var taxCode = CodiceFiscale.getTaxCode(generality);
 
             form.taxCode.value = taxCode;
         }
