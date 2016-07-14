@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Codice-fiscale by heavybeard</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Codice-fiscale</h1>
+        <p>Javascript object for managing the italian tax code</p>
+
+        <p class="view"><a href="https://github.com/heavybeard/codice-fiscale">View the Project on GitHub <small>heavybeard/codice-fiscale</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/heavybeard/codice-fiscale/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/heavybeard/codice-fiscale/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/heavybeard/codice-fiscale">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="codice-fiscale" class="anchor" href="#codice-fiscale" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>codice-fiscale</h1>
+
+<p>Javascript object for managing the italian tax code.</p>
+
+<h2>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How To Use</h2>
+
+<p>Add the Object file</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>./CodiceFiscale.min.js<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>Use the function to calculate the tax code</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> person <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">CodiceFiscale</span>({
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Mario<span class="pl-pds">'</span></span>,
+    lastname<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Rossi<span class="pl-pds">'</span></span>,
+    day<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>25<span class="pl-pds">'</span></span>,
+    month<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>04<span class="pl-pds">'</span></span>,
+    year<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>1945<span class="pl-pds">'</span></span>,
+    isMale<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+    communeName<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Milano<span class="pl-pds">'</span></span>
+});</pre></div>
+
+<p>Use the public function for getting specific taxcode part</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">person</span>.<span class="pl-en">taxCode</span>();       <span class="pl-c">// RSSMRA45D25F205N</span>
+<span class="pl-smi">person</span>.<span class="pl-en">lastnameCode</span>();  <span class="pl-c">// RSS</span>
+<span class="pl-smi">person</span>.<span class="pl-en">nameCode</span>();      <span class="pl-c">//    MRA</span>
+
+<span class="pl-smi">person</span>.<span class="pl-en">dateCode</span>();      <span class="pl-c">//       45D25</span>
+<span class="pl-smi">person</span>.<span class="pl-en">yearCode</span>();      <span class="pl-c">//       45</span>
+<span class="pl-smi">person</span>.<span class="pl-en">monthCode</span>();     <span class="pl-c">//         D</span>
+<span class="pl-smi">person</span>.<span class="pl-en">dayCode</span>();       <span class="pl-c">//          25</span>
+
+<span class="pl-smi">person</span>.<span class="pl-en">communeCode</span>();   <span class="pl-c">//            F205</span>
+
+<span class="pl-smi">person</span>.<span class="pl-en">controlChar</span>();   <span class="pl-c">//                N</span></pre></div>
+
+<h2>
+<a id="known-issues" class="anchor" href="#known-issues" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Known issues</h2>
+
+<h3>
+<a id="calculation-of-control-char" class="anchor" href="#calculation-of-control-char" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><del>Calculation of control char</del>
+</h3>
+
+<p><del>The control char calculation don't work properly, so the last tax code's char is not always right</del></p>
+
+<h2>
+<a id="versions" class="anchor" href="#versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Versions</h2>
+
+<h3>
+<a id="version-100" class="anchor" href="#version-100" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version 1.0.0</h3>
+
+<ul>
+<li>Complete refactoring of the code</li>
+<li>CodiceFiscale is an Object with a constructor</li>
+<li>Create public function for specific taxcode part</li>
+<li>Fixed control char calculation</li>
+</ul>
+
+<h3>
+<a id="version-001" class="anchor" href="#version-001" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version 0.0.1</h3>
+
+<ul>
+<li>Initialize the code</li>
+<li>CodiceFiscale is an Object without constructor</li>
+<li>Used the original logic code</li>
+</ul>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Credits</h2>
+
+<p>The code is freely taken from <a href="http://zingus.altervista.org/sof/cfisc-js/cfisc.html">zingus.altervista.org</a>.
+This is a refactoring code finally here, on Github.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/heavybeard">heavybeard</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
