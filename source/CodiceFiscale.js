@@ -12,66 +12,81 @@ function CodiceFiscale(generality) {
 
     var g = this._options(generality);
 
-    /** @type {String} The name */
-    this.name = g.name;
-    /** @type {String} The lastname */
-    this.lastname = g.lastname;
-    /** @type {String} The day of birth */
-    this.day = g.day;
-    /** @type {String} The month of birth */
-    this.month = g.month;
-    /** @type {String} The year of birth */
-    this.year = g.year;
-    /** @type {Boolean} Set true if is male gender */
-    this.isMale = g.isMale;
-    /** @type {String} The commun */
-    this.communeName = g.communeName;
+    this.generality('name', g.name);
+    this.generality('lastname', g.lastname);
+    this.generality('day', g.day);
+    this.generality('month', g.month);
+    this.generality('year', g.year);
+    this.generality('isMale', g.isMale);
+    this.generality('communeName', g.communeName);
 }
 
 /** @type {Object} Define the prototype constructor */
 CodiceFiscale.prototype.constructor = CodiceFiscale;
 
-/** @private */
-/** @type {Number} The number of max chars on italian tax code */
-CodiceFiscale.prototype._maxChar = 15;
-
-/** @private */
-/** @type {Array} The array of month in char */
-CodiceFiscale.prototype._monthCodes = [
-    /** Jan - Feb - Mar */
-    'A', 'B', 'C',
-    /** Apr - May - Jun */
-    'D', 'E', 'H',
-    /** Jul - Aug - Sep */
-    'L', 'M', 'P',
-    /** Oct - Nov - Dec */
-    'R', 'S', 'T',
-];
-
-/** @private */
-/** @type {String} Char to control */
-CodiceFiscale.prototype._controlChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-/** @private */
-/** @type {Object} Table of association of char to control */
-CodiceFiscale.prototype._charsControlValue = {
-    'even': {
-        0:0,  1:1,   2:2,  3:3,   4:4,  5:5,  6:6,  7:7,  8:8,
-        9:9,  A:0,   B:1,  C:2,   D:3,  E:4,  F:5,  G:6,  H:7,
-        I:8,  J:9,   K:10, L:11,  M:12, N:13, O:14, P:15, Q:16,
-        R:17, S:18,  T:19, U:20,  V:21, W:22, X:23, Y:24, Z:25
-    },
-    'odd': {
-        0:1,  1:0,  2:5,  3:7,  4:9,  5:13, 6:15, 7:17, 8:19,
-        9:21, A:1,  B:0,  C:5,  D:7,  E:9,  F:13, G:15, H:17,
-        I:19, J:21, K:2,  L:4,  M:18, N:20, O:11, P:3,  Q:6,
-        R:8,  S:12, T:14, U:16, V:10, W:22, X:25, Y:24, Z:23
-    },
+/**
+ * The generalities infos of person
+ *
+ * @private
+ * @type {Object}
+ */
+CodiceFiscale.__generalities = {
+    /** @type {String} The name */
+    name: '',
+    /** @type {String} The lastname */
+    lastname: '',
+    /** @type {String} The day of birth */
+    day: '',
+    /** @type {String} The month of birth */
+    month: '',
+    /** @type {String} The year of birth */
+    year: '',
+    /** @type {Boolean} Set true if is male gender */
+    isMale: '',
+    /** @type {String} The commun */
+    communeName: '',
 };
 
-/** @private */
-/** @type {JSON} Defined in CodiceFiscale.cadastralCodes.js */
-CodiceFiscale.prototype._cadastralCodes = {};
+/**
+ * All settings variable are here
+ *
+ * @private
+ * @type {Object} All settings variable are here
+ */
+CodiceFiscale.prototype.__settings = {
+    /** @type {Number} The number of max chars on italian tax code */
+    maxChar: 15,
+    /** @type {Array} The array of month in char */
+    monthCodes: [
+        /** Jan - Feb - Mar */
+        'A', 'B', 'C',
+        /** Apr - May - Jun */
+        'D', 'E', 'H',
+        /** Jul - Aug - Sep */
+        'L', 'M', 'P',
+        /** Oct - Nov - Dec */
+        'R', 'S', 'T',
+    ],
+    /** @type {String} Char to control */
+    controlChars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    /** @type {Object} Table of association of char to control */
+    charsControlValue: {
+        'even': {
+            0:0,  1:1,   2:2,  3:3,   4:4,  5:5,  6:6,  7:7,  8:8,
+            9:9,  A:0,   B:1,  C:2,   D:3,  E:4,  F:5,  G:6,  H:7,
+            I:8,  J:9,   K:10, L:11,  M:12, N:13, O:14, P:15, Q:16,
+            R:17, S:18,  T:19, U:20,  V:21, W:22, X:23, Y:24, Z:25
+        },
+        'odd': {
+            0:1,  1:0,  2:5,  3:7,  4:9,  5:13, 6:15, 7:17, 8:19,
+            9:21, A:1,  B:0,  C:5,  D:7,  E:9,  F:13, G:15, H:17,
+            I:19, J:21, K:2,  L:4,  M:18, N:20, O:11, P:3,  Q:6,
+            R:8,  S:12, T:14, U:16, V:10, W:22, X:25, Y:24, Z:23
+        },
+    },
+    /** @type {JSON} Defined in CodiceFiscale.cadastralCodes.js */
+    cadastralCodes: {},
+};
 
 /**
  * Return the tax code
@@ -80,14 +95,14 @@ CodiceFiscale.prototype._cadastralCodes = {};
  * @return {String}
  */
 CodiceFiscale.prototype.taxCode = function () {
-    var lastnameCode = this.lastnameCode(this.lastname),
-        nameCode = this.nameCode(this.name),
-        dateCode = this.dateCode(this.day, this.month, this.year, this.isMale),
-        communeCode = this.communeCode(this.commune),
+    var lastnameCode = this.lastnameCode(),
+        nameCode = this.nameCode(),
+        dateCode = this.dateCode(),
+        communeCode = this.communeCode(),
         taxCode = '';
 
     taxCode = lastnameCode + nameCode + dateCode + communeCode;
-    taxCode += this.controlChar(taxCode);
+    taxCode += this.controlChar();
 
     return taxCode;
 };
@@ -99,11 +114,11 @@ CodiceFiscale.prototype.taxCode = function () {
  * @return {String}
  */
 CodiceFiscale.prototype.lastnameCode = function () {
-    var lastname = this.lastname,
+    var lastname = this.generality('lastname'),
         lastnameCode = '';
 
-    lastnameCode = this._consonants(lastname);
-    lastnameCode += this._vowels(lastname);
+    lastnameCode = this.__consonants(lastname);
+    lastnameCode += this.__vowels(lastname);
     lastnameCode += 'XXX';
     lastnameCode = lastnameCode.substr(0, 3);
 
@@ -117,15 +132,15 @@ CodiceFiscale.prototype.lastnameCode = function () {
  * @return {String}
  */
 CodiceFiscale.prototype.nameCode = function () {
-    var name = this.name,
+    var name = this.generality('name'),
         nameCode = '';
 
-    nameCode = this._consonants(name);
+    nameCode = this.__consonants(name);
     if (nameCode.length >= 4) {
         nameCode = nameCode.charAt(0) + nameCode.charAt(2) + nameCode.charAt(3);
     }
     else {
-        nameCode += this._vowels(name);
+        nameCode += this.__vowels(name);
         nameCode += 'XXX';
         nameCode = nameCode.substr(0,3);
     }
@@ -155,9 +170,9 @@ CodiceFiscale.prototype.dateCode = function () {
  * @return
  */
 CodiceFiscale.prototype.yearCode = function () {
-    year = this.year.toString().substr(this.year.length - 2, 2);
+    year = this.generality('year').toString();
 
-    return year;
+    return year.substr(year.length - 2, 2);
 };
 
 /**
@@ -168,9 +183,9 @@ CodiceFiscale.prototype.yearCode = function () {
  * @return
  */
 CodiceFiscale.prototype.monthCode = function () {
-    var month = parseInt(this.month - 1);
+    var month = parseInt(this.generality('month') - 1);
 
-    return this._monthCodes[month];
+    return this.setting('monthCodes')[month];
 };
 
 /**
@@ -181,9 +196,9 @@ CodiceFiscale.prototype.monthCode = function () {
  * @return
  */
 CodiceFiscale.prototype.dayCode = function () {
-    var day = parseInt(this.day);
+    var day = parseInt(this.generality('day'));
 
-    day = (this.isMale) ? day : day + 40;
+    day = (this.generality('isMale')) ? day : day + 40;
     day = day.toString().substr(day.length - 2, 2);
 
     return day;
@@ -196,7 +211,7 @@ CodiceFiscale.prototype.dayCode = function () {
  * @return {String}
  */
 CodiceFiscale.prototype.communeCode = function () {
-    var communeName = this.communeName,
+    var communeName = this.generality('communeName'),
         stringToMatch = /^[A-Z]\d\d\d$/i;
 
     if (communeName.match(stringToMatch)) {
@@ -212,17 +227,22 @@ CodiceFiscale.prototype.communeCode = function () {
  * @public
  * @return {String}
  */
-CodiceFiscale.prototype.controlChar = function (partialTaxCode) {
-    // Return the control char
-    if (typeof partialTaxCode === 'undefined') {
-        return this.taxCode()[this._maxChar];
-    }
-
+CodiceFiscale.prototype.controlChar = function () {
     var i = 0,
         val = 0,
-        indexChar = 0;
+        indexChar = 0,
+        maxChar = this.setting('maxChar'),
+        controlChar = this.setting('controlChars'),
+        lastnameCode = this.lastnameCode(),
+        nameCode = this.nameCode(),
+        dateCode = this.dateCode(),
+        communeCode = this.communeCode(),
+        partialTaxCode = '';
 
-    for (i = 0; i < this._maxChar; i++) {
+    // Get the partial tax code
+    partialTaxCode = lastnameCode + nameCode + dateCode + communeCode;
+
+    for (i = 0; i < maxChar; i++) {
         indexChar = partialTaxCode[i];
         if (i % 2) {
             val += this._controlValue('even', indexChar);
@@ -232,19 +252,43 @@ CodiceFiscale.prototype.controlChar = function (partialTaxCode) {
         }
     }
 
-    val = val % this._controlChars.length;
+    val = val % controlChar.length;
 
-    return this._controlChars.charAt(val);
+    return controlChar.charAt(val);
+};
+
+/**
+ * Get or set settings property
+ * This is an interface to only settings
+ *
+ * @public
+ * @param {String} propertyPath The property to set or get
+ * @param {mixin}  dataToSet    Data to set, if not defined than return
+ */
+CodiceFiscale.prototype.setting = function (property, dataToSet) {
+    return this.__property('__settings.' + property, dataToSet);
+};
+
+/**
+ * Get or set generalities property
+ * This is an interface to only generalities
+ *
+ * @public
+ * @param {String} propertyPath The property to set or get
+ * @param {mixin}  dataToSet    Data to set, if not defined than return
+ */
+CodiceFiscale.prototype.generality = function (property, dataToSet) {
+    return this.__property('__generalities.' + property, dataToSet);
 };
 
 /**
  * Return the commune name and code
  *
- * @private
+ * @protected
  * @return {Array}
  */
 CodiceFiscale.prototype._commune = function () {
-    var communeName = this.communeName,
+    var communeName = this.generality('communeName'),
         code = [],
         commune = [],
         communeCodeToReturn = [],
@@ -255,7 +299,7 @@ CodiceFiscale.prototype._commune = function () {
 
     quoted = communeName.replace(stringToReplace, '\\$1');
     regex = new RegExp(quoted, 'i');
-    for (code in this._cadastralCodes) {
+    for (code in this.setting('cadastralCodes')) {
         commune = this._communeCadastralCode(code);
         if (commune.match(regex)) {
             communeCodeToReturn.push([commune, code]);
@@ -268,29 +312,29 @@ CodiceFiscale.prototype._commune = function () {
 /**
  * Return the cadastralCode selected
  *
- * @private
+ * @protected
  * @return {String}
  */
 CodiceFiscale.prototype._communeCadastralCode = function (code) {
-    return this._cadastralCodes[code];
+    return this.setting('cadastralCodes')[code];
 };
 
 /**
  * Return control value of even/odd char
  *
- * @private
+ * @protected
  * @param  {String} type 'even' or 'odd'
  * @param  {String} char The char to check
  * @return {Number}
  */
 CodiceFiscale.prototype._controlValue = function (type, char) {
-    return this._charsControlValue[type][char];
+    return this.setting('charsControlValue')[type][char];
 };
 
 /**
  * Return the generality setted on Class call
  *
- * @private
+ * @protected
  * @param  {Object|Array} generality The generality passed
  * @return {Object}
  */
@@ -305,23 +349,7 @@ CodiceFiscale.prototype._options = function (generality) {
         communeName: generality.communeName || generality[6],
     };
 
-    this._checkUndefined(options);
-
     return options;
-};
-
-/**
- * Console warn message for undefined properties
- *
- * @private
- * @param  {Object} object The object to check
- */
-CodiceFiscale.prototype._checkUndefined = function (object) {
-    for (var property in object) {
-        if (typeof object[property] === 'undefined') {
-            console.warn('The ' + property + ' property is not defined');
-        }
-    }
 };
 
 /**
@@ -331,7 +359,7 @@ CodiceFiscale.prototype._checkUndefined = function (object) {
  * @param  {String} string The string to parse
  * @return {String}
  */
-CodiceFiscale.prototype._consonants = function (string) {
+CodiceFiscale.prototype.__consonants = function (string) {
     return string.replace(/[^BCDFGHJKLMNPQRSTVWXYZ]/gi,'');
 };
 
@@ -342,6 +370,44 @@ CodiceFiscale.prototype._consonants = function (string) {
  * @param  {String} string The string to parse
  * @return {String}
  */
-CodiceFiscale.prototype._vowels = function (string) {
+CodiceFiscale.prototype.__vowels = function (string) {
     return string.replace(/[^AEIOU]/gi,'');
+};
+
+/**
+ * Get or Set the property
+ *
+ * @private
+ * @param {String} propertyPath The property to set or get
+ * @param {mixin}  dataToSet    Data to set, if not defined than return
+ */
+CodiceFiscale.prototype.__property = function (propertyPath, dataToSet) {
+    var property;
+
+    (function deepProp(self, path, data) {
+        if (typeof path === 'string') {
+            path = path.split('.');
+        }
+
+        if (path.length > 1) {
+            var singlePath = path.shift();
+
+            if (self[singlePath] === null || typeof self[singlePath] !== 'object') {
+                self[singlePath] = {};
+            }
+
+            deepProp(self[singlePath], path, data);
+        }
+        else {
+            if (typeof data === 'undefined') {
+                // Set global property variable
+                property = self[path[0]];
+            }
+            else {
+                self[path[0]] = data;
+            }
+        }
+    })(this, propertyPath, dataToSet);
+
+    return property;
 };

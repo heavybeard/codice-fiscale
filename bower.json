@@ -2,7 +2,7 @@
   "name": "codice-fiscale",
   "version": "1.0.0",
   "description": "Javascript object for managing the italian tax code",
-  "main": "dist/CodiceFiscale.js",
+  "main": "dist/CodiceFiscale.min.js",
   "license": "MIT",
   "keywords": [
     "codice fiscale",

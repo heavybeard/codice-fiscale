@@ -1,6 +1,6 @@
 /** @private */
 /** @type {JSON} All the cadastral codes of the italian communes */
-CodiceFiscale.prototype._cadastralCodes = {
+CodiceFiscale.prototype.__settings.cadastralCodes = {
     "A001": "ABANO TERME",
     "A004": "ABBADIA CERRETO",
     "A005": "ABBADIA LARIANA",

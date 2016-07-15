@@ -1,4 +1,4 @@
-# codice-fiscale
+# CodiceFiscale
 
 Javascript object for managing the italian tax code.
 
@@ -42,11 +42,30 @@ person.controlChar();   //                N
 
 ## Known issues
 
+### [Omocodia](http://www.engyes.com/en/dic-content/omocodia)
+
+This is an issue in italian system.
+In this case government offices change chars without a real algorithm because we don't know how many omocodias there're in this moment.
+Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come-si-calcola-e-come-si-corregge-in-caso-di-omocodia/1708/) for calculating it.
+
+> It consists in replacing one or more of the seven numbers of the code, starting from the rightmost one, with the corresponding letters below:
+> 
+> ```0 = L   |   1 = M   |   2 = N   |   3 = P   |   4 = Q ```
+>
+> ``` 5 = R  |    6 = S   |   7 = T   |   8 = U   |   9 = V ```
+
+
 ### ~~Calculation of control char~~
 
-~~The control char calculation don't work properly, so the last tax code's char is not always right~~
+~~The control char calculation don't work properly, so the last tax code's char is not always right.~~
 
 ## Versions
+
+### Version 1.0.1
+
+* New functions for setting and getting properties
+* Functions now have correct scope
+* Properties refactoring
 
 ### Version 1.0.0
 
