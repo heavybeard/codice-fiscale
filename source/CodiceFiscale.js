@@ -51,7 +51,7 @@ CodiceFiscale.__generalities = {
  * All settings variable are here
  *
  * @private
- * @type {Object} All settings variable are here
+ * @type {Object}
  */
 CodiceFiscale.prototype.__settings = {
     /** @type {Number} The number of max chars on italian tax code */
@@ -382,9 +382,7 @@ CodiceFiscale.prototype.__vowels = function (string) {
  * @param {mixin}  dataToSet    Data to set, if not defined than return
  */
 CodiceFiscale.prototype.__property = function (propertyPath, dataToSet) {
-    var property;
-
-    (function deepProp(self, path, data) {
+    return (function deepProp(self, path, data) {
         if (typeof path === 'string') {
             path = path.split('.');
         }
@@ -396,18 +394,16 @@ CodiceFiscale.prototype.__property = function (propertyPath, dataToSet) {
                 self[singlePath] = {};
             }
 
-            deepProp(self[singlePath], path, data);
+            return deepProp(self[singlePath], path, data);
         }
         else {
             if (typeof data === 'undefined') {
                 // Set global property variable
-                property = self[path[0]];
+                return self[path[0]];
             }
             else {
                 self[path[0]] = data;
             }
         }
     })(this, propertyPath, dataToSet);
-
-    return property;
 };
