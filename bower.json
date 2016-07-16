@@ -1,6 +1,6 @@
 {
   "name": "codice-fiscale",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Javascript object for managing the italian tax code",
   "main": "dist/CodiceFiscale.min.js",
   "license": "MIT",
