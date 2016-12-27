@@ -2,6 +2,10 @@
 
 Javascript object for managing the italian tax code.
 
+```shell
+bower install codice-fiscale --save
+```
+
 ## How To Use
 
 Add the Object file
