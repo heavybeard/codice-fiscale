@@ -3,9 +3,6 @@
   "version": "1.0.1",
   "description": "Javascript object for managing the italian tax code",
   "main": "dist/CodiceFiscale.min.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/heavybeard/codice-fiscale.git"
@@ -35,6 +32,7 @@
     "clean": "rm dist/*.js",
     "watch": "npm run watch-compress-js",
     "version": "npm run build && git add -u .",
-    "build": "npm run clean && npm run compress-js"
+    "build": "npm run clean && npm run compress-js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
