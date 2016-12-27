@@ -61,6 +61,11 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 
 ## Versions
 
+### Version 1.0.2
+* Added on bower packages
+* Fix bower.json file for publishing
+* Added beautified script on dist
+
 ### Version 1.0.1
 
 * New functions for setting and getting properties
