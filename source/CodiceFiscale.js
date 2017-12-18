@@ -263,7 +263,7 @@ CodiceFiscale.prototype.dayCode = function () {
     var day = parseInt(this.generality('day'));
 
     day = (this.generality('isMale')) ? day : day + 40;
-    day = ('00'+day.toString()).substring(day.toString().length);
+    day = ('00' + day.toString()).substring(day.toString().length);
 
     return day;
 };
