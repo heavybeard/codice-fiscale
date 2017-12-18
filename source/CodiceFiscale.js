@@ -362,7 +362,7 @@ CodiceFiscale.prototype._commune = function () {
         regex = '';
 
     quoted = communeName.replace(stringToReplace, '\\$1');
-    regex = new RegExp(quoted, 'i');
+    regex = new RegExp('^' + quoted + '$', 'i');
     for (code in this.setting('cadastralCodes')) {
         commune = this._communeCadastralCode(code);
         if (commune.match(regex)) {
