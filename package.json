@@ -13,10 +13,12 @@
     "italian tax code"
   ],
   "author": "heavybeard",
-  "contributors": [{
-    "name": "zingus",
-    "url": "http://zingus.altervista.org/"
-  }],
+  "contributors": [
+    {
+      "name": "zingus",
+      "url": "http://zingus.altervista.org/"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/heavybeard/codice-fiscale/issues"
@@ -26,7 +28,7 @@
     "nodemon": "^1.8.1",
     "uglify-js": "^2.4.21"
   },
-   "scripts": {
+  "scripts": {
     "compress-js": "uglifyjs --mangle --preamble=\"/** CodiceFiscale - 1.0.2 (https://github.com/heavybeard/codice-fiscale) */\" source/CodiceFiscale.js source/CodiceFiscale.cadastralCodes.js > dist/CodiceFiscale.min.js",
     "beautify-js": "uglifyjs --beautify --preamble=\"/** CodiceFiscale - 1.0.2 (https://github.com/heavybeard/codice-fiscale) */\" source/CodiceFiscale.js source/CodiceFiscale.cadastralCodes.js > dist/CodiceFiscale.js",
     "watch-compress-js": "nodemon -e js --watch source -x \"npm run compress-js\"",
