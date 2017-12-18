@@ -195,7 +195,7 @@ CodiceFiscale.prototype.generality = function(property, dataToSet) {
 CodiceFiscale.prototype._commune = function() {
     var communeName = this.generality("communeName"), code = [], commune = [], communeCodeToReturn = [], stringToReplace = /([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!<\>\|\:])/g, quoted = "", re = "", regex = "";
     quoted = communeName.replace(stringToReplace, "\\$1");
-    regex = new RegExp(quoted, "i");
+    regex = new RegExp("^" + quoted + "$", "i");
     for (code in this.setting("cadastralCodes")) {
         commune = this._communeCadastralCode(code);
         if (commune.match(regex)) {
