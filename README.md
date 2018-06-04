@@ -65,6 +65,12 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 
 ## Versions
 
+### Version 1.1.0
+* Updated cadastral codes from Agenzia delle Entrate
+
+### Version 1.0.3
+* General fixes
+
 ### Version 1.0.2
 * Added on bower packages
 * Fix bower.json file for publishing
