@@ -1,6 +1,6 @@
 {
   "name": "codice-fiscale",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Javascript object for managing the italian tax code",
   "main": "dist/CodiceFiscale.min.js",
   "repository": {
@@ -29,8 +29,8 @@
     "uglify-js": "^2.4.21"
   },
   "scripts": {
-    "compress-js": "uglifyjs --mangle --preamble=\"/** CodiceFiscale - 1.0.2 (https://github.com/heavybeard/codice-fiscale) */\" source/CodiceFiscale.js source/CodiceFiscale.cadastralCodes.js > dist/CodiceFiscale.min.js",
-    "beautify-js": "uglifyjs --beautify --preamble=\"/** CodiceFiscale - 1.0.2 (https://github.com/heavybeard/codice-fiscale) */\" source/CodiceFiscale.js source/CodiceFiscale.cadastralCodes.js > dist/CodiceFiscale.js",
+    "compress-js": "uglifyjs --mangle --preamble=\"/** CodiceFiscale - 1.1.0 (https://github.com/heavybeard/codice-fiscale) */\" source/CodiceFiscale.js source/CodiceFiscale.cadastralCodes.js > dist/CodiceFiscale.min.js",
+    "beautify-js": "uglifyjs --beautify --preamble=\"/** CodiceFiscale - 1.1.0 (https://github.com/heavybeard/codice-fiscale) */\" source/CodiceFiscale.js source/CodiceFiscale.cadastralCodes.js > dist/CodiceFiscale.js",
     "watch-compress-js": "nodemon -e js --watch source -x \"npm run compress-js\"",
     "clean": "rm dist/*.js",
     "watch": "npm run watch-compress-js",
