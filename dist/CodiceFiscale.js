@@ -157,7 +157,7 @@ CodiceFiscale.prototype.monthCode = function() {
 CodiceFiscale.prototype.dayCode = function() {
     var day = parseInt(this.generality("day"));
     day = this.generality("isMale") ? day : day + 40;
-    day = ('00'+day.toString()).substring(day.toString().length);
+    day = ("00" + day.toString()).substring(day.toString().length);
     return day;
 };
 
@@ -195,7 +195,7 @@ CodiceFiscale.prototype.generality = function(property, dataToSet) {
 CodiceFiscale.prototype._commune = function() {
     var communeName = this.generality("communeName"), code = [], commune = [], communeCodeToReturn = [], stringToReplace = /([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!<\>\|\:])/g, quoted = "", re = "", regex = "";
     quoted = communeName.replace(stringToReplace, "\\$1");
-    regex = new RegExp(quoted, "i");
+    regex = new RegExp("^" + quoted + "$", "i");
     for (code in this.setting("cadastralCodes")) {
         commune = this._communeCadastralCode(code);
         if (commune.match(regex)) {
