@@ -1,4 +1,4 @@
-/** CodiceFiscale - 1.1.0 (https://github.com/heavybeard/codice-fiscale) */
+/** CodiceFiscale - 1.1.1 (https://github.com/heavybeard/codice-fiscale) */
 function CodiceFiscale(generality) {
     if (!(this instanceof CodiceFiscale)) {
         return new CodiceFiscale(generality);
