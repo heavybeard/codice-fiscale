@@ -65,6 +65,9 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 
 ## Versions
 
+### Version 1.1.1
+* Run npm audit fix for security
+
 ### Version 1.1.0
 * Updated cadastral codes from Agenzia delle Entrate
 
