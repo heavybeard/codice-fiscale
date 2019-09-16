@@ -53,7 +53,7 @@ In this case government offices change chars without a real algorithm because we
 Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come-si-calcola-e-come-si-corregge-in-caso-di-omocodia/1708/) for calculating it.
 
 > It consists in replacing one or more of the seven numbers of the code, starting from the rightmost one, with the corresponding letters below:
-> 
+>
 > ```0 = L   |   1 = M   |   2 = N   |   3 = P   |   4 = Q ```
 >
 > ``` 5 = R  |    6 = S   |   7 = T   |   8 = U   |   9 = V ```
@@ -64,6 +64,9 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 ~~The control char calculation don't work properly, so the last tax code's char is not always right.~~
 
 ## Versions
+
+### Version 1.1.2
+* Run npm audit fix for security
 
 ### Version 1.1.1
 * Run npm audit fix for security
