@@ -18,30 +18,31 @@ Use the function to calculate the tax code
 
 ```javascript
 var person = new CodiceFiscale({
-    name: 'Mario',
-    lastname: 'Rossi',
-    day: '25',
-    month: '04',
-    year: '1945',
+    name: "Mario",
+    lastname: "Rossi",
+    day: "25",
+    month: "04",
+    year: "1945",
     isMale: true,
-    communeName: 'Milano'
+    communeName: "Milano",
 });
 ```
+
 Use the public function for getting specific taxcode part
 
 ```javascript
-person.taxCode();       // RSSMRA45D25F205N
-person.lastnameCode();  // RSS
-person.nameCode();      //    MRA
+person.taxCode(); // RSSMRA45D25F205N
+person.lastnameCode(); // RSS
+person.nameCode(); //    MRA
 
-person.dateCode();      //       45D25
-person.yearCode();      //       45
-person.monthCode();     //         D
-person.dayCode();       //          25
+person.dateCode(); //       45D25
+person.yearCode(); //       45
+person.monthCode(); //         D
+person.dayCode(); //          25
 
-person.communeCode();   //            F205
+person.communeCode(); //            F205
 
-person.controlChar();   //                N
+person.controlChar(); //                N
 ```
 
 ## Known issues
@@ -54,10 +55,9 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 
 > It consists in replacing one or more of the seven numbers of the code, starting from the rightmost one, with the corresponding letters below:
 >
-> ```0 = L   |   1 = M   |   2 = N   |   3 = P   |   4 = Q ```
+> `0 = L | 1 = M | 2 = N | 3 = P | 4 = Q`
 >
-> ``` 5 = R  |    6 = S   |   7 = T   |   8 = U   |   9 = V ```
-
+> `5 = R | 6 = S | 7 = T | 8 = U | 9 = V`
 
 ### ~~Calculation of control char~~
 
@@ -65,41 +65,50 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 
 ## Versions
 
+### Version 1.1.3
+
+-   Run npm audit fix for security
+
 ### Version 1.1.2
-* Run npm audit fix for security
+
+-   Run npm audit fix for security
 
 ### Version 1.1.1
-* Run npm audit fix for security
+
+-   Run npm audit fix for security
 
 ### Version 1.1.0
-* Updated cadastral codes from Agenzia delle Entrate
+
+-   Updated cadastral codes from Agenzia delle Entrate
 
 ### Version 1.0.3
-* General fixes
+
+-   General fixes
 
 ### Version 1.0.2
-* Added on bower packages
-* Fix bower.json file for publishing
-* Added beautified script on dist
+
+-   Added on bower packages
+-   Fix bower.json file for publishing
+-   Added beautified script on dist
 
 ### Version 1.0.1
 
-* New functions for setting and getting properties
-* Functions now have correct scope
-* Properties refactoring
+-   New functions for setting and getting properties
+-   Functions now have correct scope
+-   Properties refactoring
 
 ### Version 1.0.0
 
-* Complete refactoring of the code
-* CodiceFiscale is an Object with a constructor
-* Create public function for specific taxcode part
-* Fixed control char calculation
+-   Complete refactoring of the code
+-   CodiceFiscale is an Object with a constructor
+-   Create public function for specific taxcode part
+-   Fixed control char calculation
 
 ### Version 0.0.1
 
-* Initialize the code
-* CodiceFiscale is an Object without constructor
-* Used the original logic code
+-   Initialize the code
+-   CodiceFiscale is an Object without constructor
+-   Used the original logic code
 
 ## Credits
 
