@@ -9,7 +9,7 @@ bower install codice-fiscale --save
 or
 
 ```shell
-npm install @heavybeard/codice-fiscale --save
+npm install codice-fiscale-js --save
 ```
 
 ## How To Use
@@ -73,7 +73,7 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 
 ### Version 1.1.4
 
-- Change npm package name to `@heavybeard/codice-fiscale`
+- Change npm package name to `codice-fiscale-js`
 
 ### Version 1.1.3
 
