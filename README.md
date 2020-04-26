@@ -71,6 +71,10 @@ Here there's a [good explanation](http://quifinanza.it/tasse/codice-fiscale-come
 
 ## Versions
 
+### Version 1.1.4
+
+- Change npm package name to `@heavybeard/codice-fiscale`
+
 ### Version 1.1.3
 
 -   Run npm audit fix for security
